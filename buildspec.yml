@@ -20,5 +20,5 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
   update_ecs:
-    command: 
+    commands: 
       - aws ecs update-service --region $AWS_DEFAULT_REGION --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION --force-new-deployment
