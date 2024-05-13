@@ -15,11 +15,11 @@ on:
       - develop
 
 env:
-  AWS_REGION: ${{ env.AWS_REGION }}          # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: ${{ env.IMAGE_REPO_NAME }}           # set this to your Amazon ECR repository name
-  SERVICE_NAME: ${{ env.SERVICE_NAME }}                 # set this to your Amazon ECS service name
-  CLUSTER_NAME: ${{ env.CLUSTER_NAME }}                   # set this to your Amazon ECS cluster name
-  REPOSITORY_URI: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_REPO_NAME }}
+  AWS_REGION: $AWS_REGION          # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: $IMAGE_REPO_NAME           # set this to your Amazon ECR repository name
+  SERVICE_NAME: $SERVICE_NAME                 # set this to your Amazon ECS service name
+  CLUSTER_NAME: $CLUSTER_NAME                   # set this to your Amazon ECS cluster name
+  REPOSITORY_URI: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
 
 jobs:
   deploy:
@@ -42,9 +42,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-        runs: |
-          echo "$REPOSITORY_URI" 
+          aws-region: $AWS_REGION
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -64,6 +62,6 @@ jobs:
         id: restart-ecs
         run: |
           # restart ecs service
-          aws ecs update-service --region ${{ env.AWS_REGION }} --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition ${{ env.TASK_DEFINITION }} --force-new-deployment
+          aws ecs update-service --region $AWS_REGION --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION --force-new-deployment
 
 
