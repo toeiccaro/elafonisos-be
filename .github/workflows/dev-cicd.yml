@@ -21,6 +21,7 @@ env:
   CLUSTER_NAME: strapi_cluster                  # set this to your Amazon ECS cluster name
   REPOSITORY_URI: 339712972616.dkr.ecr.eu-central-2.amazonaws.com/elanofisos
   IMAGE_TAG: latest
+  TASK_DEFINITION: elafonisos_task_definition:3
 
 jobs:
   deploy:
