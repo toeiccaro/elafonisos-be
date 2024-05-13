@@ -15,7 +15,7 @@ on:
       - develop
 
 env:
-  AWS_REGION: $AWS_REGION          # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: eu-central-2          # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: $IMAGE_REPO_NAME           # set this to your Amazon ECR repository name
   SERVICE_NAME: $SERVICE_NAME                 # set this to your Amazon ECS service name
   CLUSTER_NAME: $CLUSTER_NAME                   # set this to your Amazon ECS cluster name
