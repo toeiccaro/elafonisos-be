@@ -33,6 +33,7 @@ jobs:
         run: |
           # Build a docker container and
           echo $AWS_REGION
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
 
       - name: Checkout
         uses: actions/checkout@v4
