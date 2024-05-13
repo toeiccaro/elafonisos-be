@@ -16,10 +16,10 @@ on:
 
 env:
   AWS_REGION: eu-central-2          # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: $IMAGE_REPO_NAME           # set this to your Amazon ECR repository name
-  SERVICE_NAME: $SERVICE_NAME                 # set this to your Amazon ECS service name
-  CLUSTER_NAME: $CLUSTER_NAME                   # set this to your Amazon ECS cluster name
-  REPOSITORY_URI: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
+  ECR_REPOSITORY: elanofisos           # set this to your Amazon ECR repository name
+  SERVICE_NAME: strapi_service                 # set this to your Amazon ECS service name
+  CLUSTER_NAME: strapi_cluster                  # set this to your Amazon ECS cluster name
+  REPOSITORY_URI: 339712972616.dkr.ecr.eu-central-2.amazonaws.com/elanofisos
 
 jobs:
   deploy:
