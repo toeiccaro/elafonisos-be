@@ -28,6 +28,12 @@ jobs:
     environment: production
 
     steps:
+      - name: print
+        id: print
+        run: |
+          # Build a docker container and
+          echo "region: $AWS_REGION"
+
       - name: Checkout
         uses: actions/checkout@v4
 
