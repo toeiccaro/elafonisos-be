@@ -1,70 +1,61 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# name: Deploy to Amazon ECS
 
-# GitHub recommends pinning actions to a commit SHA.
-# To get a newer version, you will need to update the SHA.
-# You can also reference a tag or branch, but the action may change without warning.
+# on:
+#   push:
+#     branches:
+#       - develop
 
-name: Deploy to Amazon ECS
+# env:
+#   AWS_REGION: eu-central-2          # set this to your preferred AWS region, e.g. us-west-1
+#   ECR_REPOSITORY: elanofisos           # set this to your Amazon ECR repository name
+#   SERVICE_NAME: strapi_service                 # set this to your Amazon ECS service name
+#   CLUSTER_NAME: strapi_cluster                  # set this to your Amazon ECS cluster name
+#   REPOSITORY_URI: 339712972616.dkr.ecr.eu-central-2.amazonaws.com/elanofisos
+#   IMAGE_TAG: latest
+#   TASK_DEFINITION: elafonisos_task_definition:3
 
-on:
-  push:
-    branches:
-      - develop
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     environment: production
 
-env:
-  AWS_REGION: eu-central-2          # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: elanofisos           # set this to your Amazon ECR repository name
-  SERVICE_NAME: strapi_service                 # set this to your Amazon ECS service name
-  CLUSTER_NAME: strapi_cluster                  # set this to your Amazon ECS cluster name
-  REPOSITORY_URI: 339712972616.dkr.ecr.eu-central-2.amazonaws.com/elanofisos
-  IMAGE_TAG: latest
-  TASK_DEFINITION: elafonisos_task_definition:3
+#     steps:
+#       - name: print
+#         id: print
+#         run: |
+#           # Build a docker container and
+#           echo $AWS_REGION
+#           echo ${{ secrets.AWS_ACCESS_KEY_ID }}
 
-jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    environment: production
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-    steps:
-      - name: print
-        id: print
-        run: |
-          # Build a docker container and
-          echo $AWS_REGION
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       - name: Configure AWS credentials
+#         run: |
+#           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws configure set region $AWS_REGION
 
-      - name: Checkout
-        uses: actions/checkout@v4
+#       - name: Login to Amazon ECR
+#         id: login-ecr
+#         run: |
+#           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
 
-      - name: Configure AWS credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set region $AWS_REGION
+#       - name: Build, tag, and push image to Amazon ECR
+#         id: build-image
+#         run: |
+#           # Build a docker container and
+#           # push it to ECR so that it can
+#           # be deployed to ECS.
+#           docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+#           docker push $REPOSITORY_URI:$IMAGE_TAG
+#           echo "image=$ECR_REGISTRY/$IMAGE_REPO_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   run: |
-      #     aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-
-      # - name: Build, tag, and push image to Amazon ECR
-      #   id: build-image
-      #   run: |
-      #     # Build a docker container and
-      #     # push it to ECR so that it can
-      #     # be deployed to ECS.
-      #     docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-      #     docker push $REPOSITORY_URI:$IMAGE_TAG
-      #     echo "image=$ECR_REGISTRY/$IMAGE_REPO_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-      - name: restart ecs service
-        id: restart-ecs
-        run: |
-          # restart ecs service
-          aws ecs update-service --region $AWS_REGION --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION --force-new-deployment
+#       - name: restart ecs service
+#         id: restart-ecs
+#         run: |
+#           # restart ecs service
+#           aws ecs update-service --region $AWS_REGION --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION --force-new-deployment
 
 
